@@ -1,0 +1,1 @@
+python -m PyInstaller --onefile .\main.py  --paths="C:\Users\Kien\PycharmProjects\auto-c2x-station\venv2\Lib\site-packages\cv2"
