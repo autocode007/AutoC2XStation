@@ -160,7 +160,8 @@ class LDPlayer(Player):
                 x, y = pos[target_index]
                 subprocess.Popen(self.path + " adb --index " + self.index +
                                  " --command " + '"' + "shell input tap " + str(x) + " " + str(y) + '"')
-
+            return True
+        return False
     def get_pos_click2(self, img_path: str, multi: bool = False, need_capture=True):
         logging.info("GET pos click2 - " + img_path)
         if need_capture:
@@ -175,26 +176,30 @@ class LDPlayer(Player):
             return pos
 
     def wait_image(self, image: str, timeout: int = 10):
-        self.screen_cap()
-        if self.name:
-            while not Player.get_pos_click(os.path.abspath(
-                    f"images-screencap/{self.name}.png"), image) and timeout > 0:
-                self.screen_cap()
-                timeout -= 1
-            if timeout < 1:
-                raise TimeoutError("Can't find image on screen")
-            else:
-                return True
+        try:
+            self.screen_cap()
+            if self.name:
+                while not Player.get_pos_click(os.path.abspath(
+                        f"images-screencap/{self.name}.png"), image) and timeout > 0:
+                    self.screen_cap()
+                    timeout -= 1
+                if timeout < 1:
+                    raise TimeoutError("Can't find image on screen")
+                else:
+                    return True
 
-        elif self.index:
-            while not Player.get_pos_click(os.path.abspath(
-                    f"images-screencap/index{self.index}.png"), image) and timeout > 0:
-                self.screen_cap()
-                timeout -= 1
-            if timeout < 1:
-                raise TimeoutError("Can't find image on screen")
-            else:
-                return True
+            elif self.index:
+                while not Player.get_pos_click(os.path.abspath(
+                        f"images-screencap/index{self.index}.png"), image) and timeout > 0:
+                    self.screen_cap()
+                    timeout -= 1
+                if timeout < 1:
+                    raise TimeoutError("Can't find image on screen")
+                else:
+                    return True
+        except Exception as ex:
+            print("Error")
+            return False
 
     def send_text(self, text: str):
         if self.name:
@@ -211,6 +216,14 @@ class LDPlayer(Player):
         elif self.index:
             subprocess.Popen(self.path + " adb --index " + self.index +
                              " --command " + '"' + "shell input keyevent " + key + '"')
+
+    def swipe(self, x1, y1, x2, y2):
+        if self.name:
+            subprocess.Popen(self.path + " adb --name " + '"' + self.name +
+                             '"' + " --command " + '"' + "shell input touchscreen swipe " + str(x1) + " " + str(y1) + " " + str(x2) + " " + str(y2) + ' 750 "')
+        elif self.index:
+            subprocess.Popen(self.path + " adb --index " + self.index +
+                             '"' + " --command " + '"' + "shell input touchscreen swipe " + str(x1) + " " + str(y1) + " " + str(x2) + " " + str(y2) + ' 750 "')
 
     def screen_cap(self):
 

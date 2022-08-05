@@ -1,13 +1,14 @@
 import time
 
-from util.Constant import WALLET_PASSWORD, WALLET_NAME
+from util.Constant import WALLET_PASSWORD
 from util.FileUtil import FileUtil
 from util.Player import Player
 from screen.BaseScreen import BaseScreen
 
 
 class RecoverWallet(BaseScreen):
-    def __init__(self, player: Player) -> None:
+    def __init__(self, player: Player, nameC2x: str) -> None:
+        self.nameC2x = nameC2x
         super().__init__(player, "data/sig_recover_wallet.png")
 
     def click_explore(self):
@@ -33,7 +34,7 @@ class RecoverWallet(BaseScreen):
         #fill name and password
         self.player.click(712,703) #name
         time.sleep(2)
-        self.player.send_text(WALLET_NAME)
+        self.player.send_text(self.nameC2x)
         time.sleep(2)
 
         self.player.click(712, 1048)  # pass1

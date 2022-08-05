@@ -27,28 +27,12 @@ class BaseScreen:
             return False
 
     def wait_util_display(self, timeout=10):
-        logging.info("wait_util_display " + self.get_class_name())
-        logging.info(FileUtil.get_image_full_path(self.signature))
-        self.player.wait_image(FileUtil.get_image_full_path(self.signature), timeout)
-
-    #
-    # def click_common_btn(self, need_capture=True):
-    #     logging.info("click_common_btn " + self.get_class_name())
-    #     common_btns: list[str] = ["data/common_btn_ok.png",
-    #                               "data/common_btn_ok2.png",
-    #                               "data/common_btn_open_all.png",
-    #                               "data/common_btn_collect.png",
-    #                               "data/common_btn_collect2.png",
-    #                               "data/common_btn_retry.png",
-    #                               "data/common_btn_ok3.png"
-    #                               ]
-    #
-    #     if need_capture:
-    #         self.player.screen_cap()
-    #     for btnPath in common_btns:
-    #         if self.player.is_contain_image(FileUtil.get_image_full_path(btnPath), need_capture=False):
-    #             self.player.click_to_image(FileUtil.get_image_full_path(btnPath), need_capture=False)
-    #             time.sleep(2)
+        try:
+            logging.info("wait_util_display " + self.get_class_name())
+            logging.info(FileUtil.get_image_full_path(self.signature))
+            self.player.wait_image(FileUtil.get_image_full_path(self.signature), timeout)
+        except Exception as ex:
+            print(str(ex))
 
     def click_next(self):
         self.player.click_to_image(FileUtil.get_image_full_path("data/common_next_btn.png"))

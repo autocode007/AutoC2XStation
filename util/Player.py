@@ -66,7 +66,9 @@ class Player():
     @abstractmethod
     def click(self, x: int, y: int):
         pass
-
+    @abstractmethod
+    def swipe(self, x1, y1, x2, y2):
+        pass
     @abstractmethod
     def is_contain_image(self, image_path: str, need_capture=True):
         pass
